@@ -216,16 +216,16 @@ public class CSVAppExporter extends ApplicationExporter {
 	
 	private String getRestrictedAPI(QuotaRestriction quotaRestriction) throws AppException {
 		if(quotaRestriction==null) return "N/A";
-		API api = quotaRestriction.getApi();
+		API api = apiManager.apiAdapter.getAPIWithId(quotaRestriction.getApi());
 		if(api==null) return "Err";
 		return api.getName();
 	}
 	
 	private String getRestrictedMethod(QuotaRestriction quotaRestriction) throws AppException {
 		if(quotaRestriction==null) return "N/A";
-		API restrictedAPI = quotaRestriction.getApi();
+		API restrictedAPI = apiManager.apiAdapter.getAPIWithId(quotaRestriction.getApi());
 		if(restrictedAPI==null) return "Err";
-		return quotaRestriction.getMethod().getName().equals("*") ? "All Methods" : quotaRestriction.getMethod().getName();
+		return quotaRestriction.getMethod().equals("*") ? "All Methods" : apiManager.methodAdapter.getMethodForId(restrictedAPI.getId(), quotaRestriction.getMethod()).getName();
 	}
 	
 	private String getQuotaConfig(QuotaRestriction quotaRestriction) throws AppException {
