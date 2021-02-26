@@ -19,7 +19,7 @@ import com.consol.citrus.functions.core.RandomNumberFunction;
 import com.consol.citrus.message.MessageType;
 
 @Test
-public class ImportApplicationWithAPIAccessTestIT extends TestNGCitrusTestRunner implements TestParams {
+public class ImportExportApplicationWithAPIAccessAndQuotasTestIT extends TestNGCitrusTestRunner implements TestParams {
 	
 	private ImportTestAction apiImport = new ImportTestAction();
 	
@@ -107,12 +107,34 @@ public class ImportApplicationWithAPIAccessTestIT extends TestNGCitrusTestRunner
 		http(builder -> builder.client("apiManager").receive().response(HttpStatus.OK).messageType(MessageType.JSON)
 			.validate("$.[?(@.id=='${appId}')].name", "${appName}"));
 		
-		echo("####### Validate application: '${appName}' has access to the imported API 1 and 2 #######");
+		echo("####### Validate application: '${appName}' has access to the API 1 and 2 #######");
 		http(builder -> builder.client("apiManager").send().get("/applications/${appId}/apis").header("Content-Type", "application/json"));
 		
 		http(builder -> builder.client("apiManager").receive().response(HttpStatus.OK).messageType(MessageType.JSON)
 			.validate("$.[?(@.apiId=='${apiId1}')].state", "approved")
 			.validate("$.[?(@.apiId=='${apiId2}')].state", "approved"));
+		
+		echo("####### Add Quota config to the application for API1 (all methods) and API2 (specific method) #######");
+		createVariable(PARAM_CONFIGFILE,  PACKAGE + "AppWithTwoAPIsAndQuotas.json");
+		createVariable(PARAM_EXPECTED_RC, "0");
+		importApp.doExecute(context);
+		
+		echo("####### Validate configured quotas have been applied to application for both APIs #######");
+		http(builder -> builder.client("apiManager").send().get("/applications/${appId}/quota").header("Content-Type", "application/json"));
+		
+		http(builder -> builder.client("apiManager").receive().response(HttpStatus.OK).messageType(MessageType.JSON)
+				.validate("$.restrictions.[?(@.api=='${apiId1}')].type", "throttle")
+				.validate("$.restrictions.[?(@.api=='${apiId1}')].method", "*")
+				.validate("$.restrictions.[?(@.api=='${apiId1}')].config.messages", "50")
+				.validate("$.restrictions.[?(@.api=='${apiId1}')].config.period", "hour")
+				.validate("$.restrictions.[?(@.api=='${apiId1}')].config.per", "1")
+				
+				.validate("$.restrictions.[?(@.api=='${apiId2}')].type", "throttle")
+				//.validate("$.restrictions.[?(@.api=='${apiId2}')].method", "*")
+				.validate("$.restrictions.[?(@.api=='${apiId2}')].config.messages", "500")
+				.validate("$.restrictions.[?(@.api=='${apiId2}')].config.period", "day")
+				.validate("$.restrictions.[?(@.api=='${apiId2}')].config.per", "2")
+				);		
 		
 		echo("####### Reduce access of application: '${appName}' to only ONE API #######");
 		createVariable(PARAM_CONFIGFILE,  PACKAGE + "AppWithAPIAccess.json");

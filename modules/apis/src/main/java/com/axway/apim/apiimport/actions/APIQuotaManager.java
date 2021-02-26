@@ -44,7 +44,7 @@ public class APIQuotaManager {
 				LOG.debug("System-Quota-Config: '" + desiredState.getSystemQuota()+"'");
 				APIQuota systemQuota = APIManagerAdapter.getInstance().quotaAdapter.getDefaultQuota(Quota.SYSTEM_DEFAULT);
 				for(QuotaRestriction restriction : desiredState.getSystemQuota().getRestrictions()) {
-					restriction.setApi(actualState.getId());
+					restriction.setApi(actualState);
 				}
 				addOrMergeRestriction(systemQuota.getRestrictions(), desiredState.getSystemQuota().getRestrictions());
 				APIManagerAdapter.getInstance().quotaAdapter.saveQuota(systemQuota, systemQuota.getId());
@@ -58,7 +58,7 @@ public class APIQuotaManager {
 				LOG.debug("Application-Quota-Config: '" + desiredState.getApplicationQuota()+"'");
 				APIQuota applicationQuota = APIManagerAdapter.getInstance().quotaAdapter.getDefaultQuota(Quota.APPLICATION_DEFAULT);
 				for(QuotaRestriction restriction : desiredState.getApplicationQuota().getRestrictions()) {
-					restriction.setApi(actualState.getId());
+					restriction.setApi(actualState);
 				}
 				addOrMergeRestriction(applicationQuota.getRestrictions(), desiredState.getApplicationQuota().getRestrictions());
 				APIManagerAdapter.getInstance().quotaAdapter.saveQuota(applicationQuota, applicationQuota.getId());

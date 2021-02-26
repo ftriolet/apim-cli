@@ -1,8 +1,10 @@
 package com.axway.apim.api.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonFilter("APIMethodFilter")
 public class APIMethod {
 	/**
 	 * The ID of the FE-API operation

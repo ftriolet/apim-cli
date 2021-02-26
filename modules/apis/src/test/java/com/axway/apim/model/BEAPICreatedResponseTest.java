@@ -6,7 +6,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.axway.apim.api.API;
-import com.axway.apim.api.APIBaseDefinition;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,7 +20,7 @@ public class BEAPICreatedResponseTest {
 	@Test
 	public void parseResponseHavingCreatedOn() throws JsonParseException, JsonMappingException, IOException {
 		JsonNode jsonNode = mapper.readTree(this.getClass().getClassLoader().getResourceAsStream(testPackage + "BEAPICreatedWithCreatedOn.json"));
-		API createdAPI = new APIBaseDefinition();
+		API createdAPI = new API();
 		createdAPI.setApiId(jsonNode.get("id").asText());
 		createdAPI.setName(jsonNode.get("name").asText());
 		createdAPI.setName(jsonNode.get("description").asText());

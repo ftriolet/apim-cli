@@ -1,0 +1,34 @@
+{
+  "name" : "${appName}",
+  "organization" : "${orgName}",
+  "state" : "approved",
+  "enabled" : true,
+  "email" : "user@domain.com",
+  "phone" : "654654646234",
+  "apis" : [ {
+    "apiName" : "${apiName1}"
+  }, {
+    "apiName" : "${apiName2}"
+  } ],
+  "appQuota" : {
+    "restrictions" : [ {
+      "api" : "${apiName1}",
+      "method" : "*",
+      "type" : "throttle",
+      "config" : {
+        "messages" : "50",
+        "period" : "hour",
+        "per" : "1"
+      }
+    }, {
+      "api" : "${apiName2}",
+      "method" : "addPet",
+      "type" : "throttle",
+      "config" : {
+        "messages" : "500",
+        "period" : "day",
+        "per" : "2"
+      }
+    } ]
+  }
+}

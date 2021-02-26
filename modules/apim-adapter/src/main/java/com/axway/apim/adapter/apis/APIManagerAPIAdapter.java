@@ -43,7 +43,6 @@ import com.axway.apim.adapter.clientApps.ClientAppFilter;
 import com.axway.apim.adapter.jackson.APIImportSerializerModifier;
 import com.axway.apim.adapter.jackson.PolicySerializerModifier;
 import com.axway.apim.api.API;
-import com.axway.apim.api.APIBaseDefinition;
 import com.axway.apim.api.definition.APISpecification;
 import com.axway.apim.api.definition.APISpecification.APISpecType;
 import com.axway.apim.api.definition.APISpecificationFactory;
@@ -739,7 +738,7 @@ public class APIManagerAPIAdapter {
 			} else {
 				jsonNode =  importFromSwagger(api);
 			}
-			API createdAPI = new APIBaseDefinition();
+			API createdAPI = new API();
 			createdAPI.setApiId(jsonNode.get("id").asText());
 			createdAPI.setName(jsonNode.get("name").asText());
 			createdAPI.setCreatedOn(Long.parseLong(jsonNode.get("createdOn").asText()));

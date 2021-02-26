@@ -2,9 +2,11 @@ package com.axway.apim.api.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonFilter("APIQuotaFilter")
 public class APIQuota {
 	
 	String id;

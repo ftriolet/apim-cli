@@ -4,26 +4,30 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.axway.apim.api.API;
+import com.fasterxml.jackson.annotation.JsonFilter;
+
+@JsonFilter("QuotaRestrictionFilter")
 public class QuotaRestriction {
-	String api;
-	String method;
+	API api;
+	APIMethod method;
 	QuotaRestrictiontype type;
 	
 	Map<String, String> config;
 
-	public String getApi() {
+	public API getApi() {
 		return api;
 	}
 
-	public void setApi(String api) {
+	public void setApi(API api) {
 		this.api = api;
 	}
 
-	public String getMethod() {
+	public APIMethod getMethod() {
 		return method;
 	}
 
-	public void setMethod(String method) {
+	public void setMethod(APIMethod method) {
 		this.method = method;
 	}
 
