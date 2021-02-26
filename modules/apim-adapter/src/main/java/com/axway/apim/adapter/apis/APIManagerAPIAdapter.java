@@ -854,12 +854,12 @@ public class APIManagerAPIAdapter {
 				for(QuotaRestriction restriction : app.getAppQuota().getRestrictions()) {
 					if(restriction.getApi().equals(referenceAPI.getId())) { // This application has a restriction for this specific API
 						updateAppQuota = true;
-						restriction.setApi(apiToUpgradeAccess.getId()); // Take over the quota config to new API
-						if(!restriction.getMethod().equals("*")) { // The restriction is for a specific method
-							String originalMethodName = APIManagerAdapter.getInstance().methodAdapter.getMethodForId(referenceAPI.getId(), restriction.getMethod()).getName();
+						restriction.setApi(apiToUpgradeAccess); // Take over the quota config to new API
+						if(!restriction.getMethod().getName().equals("*")) { // The restriction is for a specific method
+							String originalMethodName = APIManagerAdapter.getInstance().methodAdapter.getMethodForId(referenceAPI.getId(), restriction.getMethod().getId()).getName();
 							// Try to find the same operation for the newly created API based on the name
-							String newMethodId = APIManagerAdapter.getInstance().methodAdapter.getMethodForName(apiToUpgradeAccess.getId(), originalMethodName).getId();
-							restriction.setMethod(newMethodId);
+							APIMethod method = APIManagerAdapter.getInstance().methodAdapter.getMethodForName(apiToUpgradeAccess.getId(), originalMethodName);
+							restriction.setMethod(method);
 						}
 					}
 				}

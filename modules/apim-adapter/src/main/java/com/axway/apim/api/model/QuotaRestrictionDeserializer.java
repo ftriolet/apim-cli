@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.axway.apim.api.API;
 import com.axway.apim.lib.errorHandling.ErrorCode;
 import com.axway.apim.lib.errorHandling.ErrorState;
 import com.fasterxml.jackson.core.JsonParser;
@@ -52,12 +53,16 @@ public class QuotaRestrictionDeserializer extends JsonDeserializer<QuotaRestrict
 		}
 		QuotaRestriction restriction = new QuotaRestriction();
 		restriction.setType(QuotaRestrictiontype.valueOf(type));
-		restriction.setMethod(node.get("method").asText());
+		APIMethod method = new APIMethod();
+		method.setName(node.get("method").asText());
+		restriction.setMethod(method);
 		Map<String, String> configMap = new LinkedHashMap<String, String>();
 		configMap.put("period", period);
 		configMap.put("per", per);
 		if(node.has("api")) {
-			restriction.setApi(node.get("api").asText());
+			API api = new API();
+			api.setName(node.get("api").asText());
+			restriction.setApi(api);
 		}
 		if(type.equals("throttle")) {
 			configMap.put("messages", quotaConfig.get("messages").asText());

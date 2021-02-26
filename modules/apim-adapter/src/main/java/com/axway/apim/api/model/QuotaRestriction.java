@@ -50,8 +50,8 @@ public class QuotaRestriction {
 	public boolean isSameRestriction(QuotaRestriction otherRestriction) {
 		if(otherRestriction == null) return false;
 		return 
-				StringUtils.equals(otherRestriction.getMethod(), this.getMethod()) &&
-				StringUtils.equals(otherRestriction.getApi(), this.getApi()) &&
+				StringUtils.equals(otherRestriction.getMethod().getName(), this.getMethod().getName()) &&
+				StringUtils.equals(otherRestriction.getApi().getName(), this.getApi().getName()) &&
 				otherRestriction.getType()==this.getType() &&
 				StringUtils.equals(otherRestriction.getConfig().get("period"), this.getConfig().get("period")) &&
 				StringUtils.equals(otherRestriction.getConfig().get("per"), this.getConfig().get("per"));
@@ -63,7 +63,7 @@ public class QuotaRestriction {
 		if(other instanceof QuotaRestriction) {
 			QuotaRestriction quotaRestriction = (QuotaRestriction)other;
 			return
-					StringUtils.equals(quotaRestriction.getMethod(), this.getMethod()) &&
+					StringUtils.equals(quotaRestriction.getMethod().getName(), this.getMethod().getName()) &&
 					quotaRestriction.getType()==this.getType() &&
 					quotaRestriction.getConfig().equals(this.getConfig());
 		} else {
